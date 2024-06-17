@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-var score: Int = 0
+final class ViewModel: ObservableObject {
+    @Published var score: Int = 0
+}
 
 struct InterhighQuizView: View {
     // 問題文，解答の読み込み
@@ -25,6 +27,8 @@ struct InterhighQuizView: View {
     @State var inputNameS3: String = ""
     @State var inputNameS2: String = ""
     @State var inputNameS1: String = ""
+    
+    @ObservedObject var Score = ViewModel()
     
     @State var submit: Bool = false
     
@@ -56,31 +60,33 @@ struct InterhighQuizView: View {
             Button(action : {
                 // scoreing
                 if answerD2.contains(inputNameD2_1) {
-                    score += 1
+                    self.Score.score += 1
                 }
                 if answerD2.contains(inputNameD2_2) {
-                    score += 1
+                    self.Score.score += 1
                 }
                 if answerD1.contains(inputNameD1_1) {
-                    score += 1
+                    self.Score.score += 1
                 }
                 if answerD1.contains(inputNameD1_2) {
-                    score += 1
+                    self.Score.score += 1
                 }
                 if inputNameS3 == answerS3 {
-                    score += 1
+                    self.Score.score += 1
                 }
                 if inputNameS2 == answerS2 {
-                    score += 1
+                    self.Score.score += 1
                 }
                 if inputNameS1 == answerS1 {
-                    score += 1
+                    self.Score.score += 1
                 }
+                //
+                submit = true
             },
                    label : {Text("提出")}
             )
             .sheet(isPresented: $submit) {
-                ResultView()
+                ResultView(Score: self.Score)
             }
             
         }

@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct ResultView: View {
+    @ObservedObject var Score: ViewModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text(String(Score.score))
     }
 }
 
 #Preview {
-    ResultView()
+    ResultView(Score: ViewModel())
 }
