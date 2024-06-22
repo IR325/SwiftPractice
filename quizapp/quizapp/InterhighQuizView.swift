@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-final class QuizResult: ObservableObject {
-    @Published var score: Int = 0
-}
-
 struct InterhighQuizView: View {
     @ObservedObject var quizCondition: QuizCondition
     var year: Int
@@ -25,7 +21,7 @@ struct InterhighQuizView: View {
     @State var inputNameS2: String = ""
     @State var inputNameS1: String = ""
     
-    @ObservedObject var result = QuizResult()
+    @State var score = 0
     
     @State var submit: Bool = false
     
@@ -85,25 +81,25 @@ struct InterhighQuizView: View {
             Button(action : {
                 // scoreing
                 if answerD2.contains(inputNameD2_1) {
-                    result.score += 1
+                    score += 1
                 }
                 if answerD2.contains(inputNameD2_2) {
-                    result.score += 1
+                    score += 1
                 }
                 if answerD1.contains(inputNameD1_1) {
-                    result.score += 1
+                    score += 1
                 }
                 if answerD1.contains(inputNameD1_2) {
-                    result.score += 1
+                    score += 1
                 }
                 if inputNameS3 == answerS3 {
-                    result.score += 1
+                    score += 1
                 }
                 if inputNameS2 == answerS2 {
-                    result.score += 1
+                    score += 1
                 }
                 if inputNameS1 == answerS1 {
-                    result.score += 1
+                    score += 1
                 }
                 //
                 submit = true
@@ -111,7 +107,7 @@ struct InterhighQuizView: View {
                    label : {Text("提出")}
             )
             .sheet(isPresented: $submit) {
-                ResultView(result: result)
+                ResultView(score: $score)
             }
             
         }

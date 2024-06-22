@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct ResultView: View {
-    @ObservedObject var result: QuizResult
+    @Binding var score: Int
     
     var body: some View {
-        Text(String(result.score))
+        Text(String(score))
     }
 }
 
-#Preview {
-    ResultView(result: QuizResult())
-}
+//#Preview {
+//    ResultView(score: 0)
+//}
