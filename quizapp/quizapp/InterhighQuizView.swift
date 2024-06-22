@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-final class ViewModel: ObservableObject {
+final class quizResult: ObservableObject {
     @Published var score: Int = 0
 }
 
 struct InterhighQuizView: View {
+    var year: Int
     var quizData: [QuizData]
-    var schoolNames: Set<String> = []
-    
+    var schoolNames: Set<String>
     
     @State var inputNameD2_1: String = ""
     @State var inputNameD2_2: String = ""
@@ -24,14 +24,13 @@ struct InterhighQuizView: View {
     @State var inputNameS2: String = ""
     @State var inputNameS1: String = ""
     
-    @ObservedObject var Score = ViewModel()
+    @ObservedObject var result = quizResult()
     
     @State var submit: Bool = false
     
-    init(quizData: [QuizData]){
-        // 学校名のユニークを取る
-        self.quizData.forEach{
-            self.schoolNames.insert($0.school)
+    init(year: Int, quizData: [QuizData]){        // 学校名のユニークを取る
+        quizData.forEach{
+            schoolNames.insert($0.school)
         }
     }
 
@@ -39,10 +38,19 @@ struct InterhighQuizView: View {
     var body: some View {
         // 問題をとってくる必要あり
         // 学校名をランダムでとってくる
-        var schoolName: String = schoolNames.randomElement()
-        var question: String = "\()年インターハイ\(schoolName)高校のメンバーを答えよ"
+        let schoolName: String = schoolNames.randomElement()!
+        let question: String = "\(year)年インターハイ\(schoolName)高校のメンバーを答えよ"
         // 正解をとってくる
-        var filteredQuizData: [QuizData] =
+        let filteredQuizData: [QuizData] = quizData.filter { $0.school == schoolName }
+        let answerD2_1: String = filteredQuizData.filter { $0.order == "D2"}[0].name
+        let answerD2_2: String = filteredQuizData.filter { $0.order == "D2"}[1].name
+        let answerD2: [String] = [answerD2_1, answerD2_2]
+        let answerD1_1: String = filteredQuizData.filter { $0.order == "D1"}[0].name
+        let answerD1_2: String = filteredQuizData.filter { $0.order == "D1"}[1].name
+        let answerD1: [String] = [answerD1_1, answerD1_2]
+        let answerS3: String = filteredQuizData.filter { $0.order == "S3"}[0].name
+        let answerS2: String = filteredQuizData.filter { $0.order == "S2"}[0].name
+        let answerS1: String = filteredQuizData.filter { $0.order == "S1"}[0].name
         
         VStack{
             Text(question)
@@ -71,25 +79,25 @@ struct InterhighQuizView: View {
             Button(action : {
                 // scoreing
                 if answerD2.contains(inputNameD2_1) {
-                    self.Score.score += 1
+                    self.result.score += 1
                 }
                 if answerD2.contains(inputNameD2_2) {
-                    self.Score.score += 1
+                    self.result.score += 1
                 }
                 if answerD1.contains(inputNameD1_1) {
-                    self.Score.score += 1
+                    self.result.score += 1
                 }
                 if answerD1.contains(inputNameD1_2) {
-                    self.Score.score += 1
+                    self.result.score += 1
                 }
                 if inputNameS3 == answerS3 {
-                    self.Score.score += 1
+                    self.result.score += 1
                 }
                 if inputNameS2 == answerS2 {
-                    self.Score.score += 1
+                    self.result.score += 1
                 }
                 if inputNameS1 == answerS1 {
-                    self.Score.score += 1
+                    self.result.score += 1
                 }
                 //
                 submit = true
@@ -97,7 +105,7 @@ struct InterhighQuizView: View {
                    label : {Text("提出")}
             )
             .sheet(isPresented: $submit) {
-                ResultView(Score: self.Score)
+                ResultView(result: self.result)
             }
             
         }

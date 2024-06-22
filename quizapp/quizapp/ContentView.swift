@@ -38,7 +38,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             NavigationView {
-                NavigationLink(destination: InterhighQuizView(quizData: quizData)) {
+                NavigationLink(destination: InterhighQuizView(year: 2014, quizData: quizData.filter { $0.year==2014 && $0.tournament_name == "interhigh" })) {
                     Text("2014年インターハイ")
                 }
                 .padding() // 周囲にスペースを追加するためのmodifier
