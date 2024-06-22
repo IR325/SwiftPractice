@@ -29,7 +29,7 @@ struct InterhighQuizView: View {
     
     @State var submit: Bool = false
     
-    init(quizCondition: QuizCondition) {        // 学校名のユニークを取る
+    init(quizCondition: QuizCondition) {
         self.quizCondition = quizCondition
         self.year = quizCondition.year
         self.quizData = quizCondition.filteredQuizData
@@ -85,25 +85,25 @@ struct InterhighQuizView: View {
             Button(action : {
                 // scoreing
                 if answerD2.contains(inputNameD2_1) {
-                    self.result.score += 1
+                    result.score += 1
                 }
                 if answerD2.contains(inputNameD2_2) {
-                    self.result.score += 1
+                    result.score += 1
                 }
                 if answerD1.contains(inputNameD1_1) {
-                    self.result.score += 1
+                    result.score += 1
                 }
                 if answerD1.contains(inputNameD1_2) {
-                    self.result.score += 1
+                    result.score += 1
                 }
                 if inputNameS3 == answerS3 {
-                    self.result.score += 1
+                    result.score += 1
                 }
                 if inputNameS2 == answerS2 {
-                    self.result.score += 1
+                    result.score += 1
                 }
                 if inputNameS1 == answerS1 {
-                    self.result.score += 1
+                    result.score += 1
                 }
                 //
                 submit = true
