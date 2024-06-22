@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-final class quizResult: ObservableObject {
+final class QuizResult: ObservableObject {
     @Published var score: Int = 0
 }
 
 struct InterhighQuizView: View {
+    @ObservedObject var quizCondition: QuizCondition
     var year: Int
     var quizData: [QuizData]
     var schoolNames: Set<String>
@@ -24,11 +25,16 @@ struct InterhighQuizView: View {
     @State var inputNameS2: String = ""
     @State var inputNameS1: String = ""
     
-    @ObservedObject var result = quizResult()
+    @ObservedObject var result = QuizResult()
     
     @State var submit: Bool = false
     
-    init(year: Int, quizData: [QuizData]){        // 学校名のユニークを取る
+    init(quizCondition: QuizCondition) {        // 学校名のユニークを取る
+        self.quizCondition = quizCondition
+        self.year = quizCondition.year
+        self.quizData = quizCondition.filteredQuizData
+        self.schoolNames = Set([])
+        
         quizData.forEach{
             schoolNames.insert($0.school)
         }
@@ -105,13 +111,13 @@ struct InterhighQuizView: View {
                    label : {Text("提出")}
             )
             .sheet(isPresented: $submit) {
-                ResultView(result: self.result)
+                ResultView(result: result)
             }
             
         }
     }
 }
 
-#Preview {
-    InterhighQuizView()
-}
+//#Preview {
+//    InterhighQuizView(quizCondition: QuizCondition())
+//}

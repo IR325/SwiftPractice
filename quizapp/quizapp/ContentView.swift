@@ -23,6 +23,7 @@ var quizData: [QuizData] = [
     QuizData(year: 2014, tournament_name: "interhigh", school: "PL学園", order: "D1", name: "宮本"),
     QuizData(year: 2014, tournament_name: "interhigh", school: "PL学園", order: "S3", name: "福留"),
     QuizData(year: 2014, tournament_name: "interhigh", school: "PL学園", order: "S2", name: "松井"),
+    QuizData(year: 2014, tournament_name: "interhigh", school: "PL学園", order: "S1", name: "サブロー"),
     QuizData(year: 2015, tournament_name: "interhigh", school: "イングランド", order: "S1", name: "ベリンガム"),
     QuizData(year: 2015, tournament_name: "interhigh", school: "イングランド", order: "D2", name: "ウォーカー"),
     QuizData(year: 2015, tournament_name: "interhigh", school: "イングランド", order: "D2", name: "サカ"),
@@ -33,12 +34,24 @@ var quizData: [QuizData] = [
     QuizData(year: 2015, tournament_name: "interhigh", school: "イングランド", order: "S1", name: "クリステンセン"),
 ]
 
+final class QuizCondition: ObservableObject {
+    @Published var year: Int
+    @Published var filteredQuizData: [QuizData]
+    
+    init(year: Int, filteredQuizData: [QuizData]){
+        self.year = year
+        self.filteredQuizData = filteredQuizData
+    }
+}
+
 
 struct ContentView: View {
+    
     var body: some View {
         VStack {
             NavigationView {
-                NavigationLink(destination: InterhighQuizView(year: 2014, quizData: quizData.filter { $0.year==2014 && $0.tournament_name == "interhigh" })) {
+                @ObservedObject var quizCondition: QuizCondition = QuizCondition(year: 2014, filteredQuizData: quizData.filter { $0.year==2014 && $0.tournament_name == "interhigh" })
+                NavigationLink(destination: InterhighQuizView(quizCondition: quizCondition)) {
                     Text("2014年インターハイ")
                 }
                 .padding() // 周囲にスペースを追加するためのmodifier

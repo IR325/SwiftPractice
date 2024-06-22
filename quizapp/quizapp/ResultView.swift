@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ResultView: View {
-    @ObservedObject var result: quizResult
+    @ObservedObject var result: QuizResult
     
     var body: some View {
         Text(String(result.score))
@@ -16,5 +16,5 @@ struct ResultView: View {
 }
 
 #Preview {
-    ResultView(result: quizResult())
+    ResultView(result: QuizResult())
 }
