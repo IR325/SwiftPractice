@@ -12,13 +12,9 @@ final class ViewModel: ObservableObject {
 }
 
 struct InterhighQuizView: View {
-    // 問題文，解答の読み込み
-    let question: String = "xxxx年インターハイxx高校のメンバーを答えよ"
-    let answerD2: [String] = ["山田", "田中"]
-    let answerD1: [String] = ["鈴木", "佐藤"]
-    let answerS3: String = "木村"
-    let answerS2: String = "高橋"
-    let answerS1: String = "飯塚"
+    var quizData: [QuizData]
+    var schoolNames: Set<String> = []
+    
     
     @State var inputNameD2_1: String = ""
     @State var inputNameD2_2: String = ""
@@ -32,7 +28,22 @@ struct InterhighQuizView: View {
     
     @State var submit: Bool = false
     
+    init(quizData: [QuizData]){
+        // 学校名のユニークを取る
+        self.quizData.forEach{
+            self.schoolNames.insert($0.school)
+        }
+    }
+
+    
     var body: some View {
+        // 問題をとってくる必要あり
+        // 学校名をランダムでとってくる
+        var schoolName: String = schoolNames.randomElement()
+        var question: String = "\()年インターハイ\(schoolName)高校のメンバーを答えよ"
+        // 正解をとってくる
+        var filteredQuizData: [QuizData] =
+        
         VStack{
             Text(question)
             HStack {
