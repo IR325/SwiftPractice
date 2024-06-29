@@ -33,7 +33,6 @@ struct InterhighQuizView: View {
             self.schoolNames.insert($0.school.wrappedValue) 
         }
     }
-
     
     var body: some View {
         // 問題をとってくる必要あり

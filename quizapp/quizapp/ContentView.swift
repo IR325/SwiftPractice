@@ -37,16 +37,25 @@ struct ContentView: View {
         QuizData(year: 2015, tournament_name: "interhigh", school: "イングランド", order: "S2", name: "エリクセン"),
         QuizData(year: 2015, tournament_name: "interhigh", school: "イングランド", order: "S1", name: "クリステンセン"),
     ]
+    @State private var year: Int = 2014
+    @State private var filteredQuizData: [QuizData] = []
+    @State private var isActive: Bool = false // ナビゲーションのアクティブ状態を管理する状態変数
     
     var body: some View {
-        VStack {
-            NavigationView {
-                @State var year = 2014
-                @State var filteredQuizData: [QuizData] = quizData.filter { $0.year==2014 && $0.tournament_name == "interhigh" }
-                NavigationLink(destination: InterhighQuizView(year: $year, quizData: $filteredQuizData)) {
+        NavigationView {
+            VStack {
+                Button(action: {
+                    self.year = 2014
+                    self.filteredQuizData = self.quizData.filter { $0.year == self.year && $0.tournament_name == "interhigh" }
+                    self.isActive = true // ボタンが押されたら isActive を true に設定してナビゲーションをトリガーする
+                }) {
                     Text("2014年インターハイ")
                 }
-                .padding() // 周囲にスペースを追加するためのmodifier
+                .padding()
+                
+                NavigationLink(destination: InterhighQuizView(year: $year, quizData: $filteredQuizData), isActive: $isActive) {
+                    EmptyView() // 実際の表示はされない
+                }
             }
             .padding()
         }
