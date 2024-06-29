@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct InterhighQuizView: View {
-    @ObservedObject var quizCondition: QuizCondition
-    var year: Int
-    var quizData: [QuizData]
+    @Binding var quizData: [QuizData]
+    @Binding var year: Int
     var schoolNames: Set<String>
     
     @State var inputNameD2_1: String = ""
@@ -25,14 +24,13 @@ struct InterhighQuizView: View {
     
     @State var submit: Bool = false
     
-    init(quizCondition: QuizCondition) {
-        self.quizCondition = quizCondition
-        self.year = quizCondition.year
-        self.quizData = quizCondition.filteredQuizData
+    init(year: Binding<Int>, quizData: Binding<[QuizData]>) {
+        self._year = year
+        self._quizData = quizData
         self.schoolNames = Set([])
         
-        quizData.forEach{
-            schoolNames.insert($0.school)
+        _quizData.forEach{
+            self.schoolNames.insert($0.school.wrappedValue) 
         }
     }
 
